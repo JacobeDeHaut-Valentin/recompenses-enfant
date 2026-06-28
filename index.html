@@ -281,7 +281,7 @@ const SOUND_PACKS=[{id:'classic',name:'Classique',emoji:'🎵'},{id:'bubbles',na
 
 let state=null,currentTaskId=null,timerInterval=null,timerRemaining=0,timerTotal=0,timerRunning=false,wakeLock=null,parentChallenge=null,perfectShownToday=false,nightCheckInterval=null;
 
-function defaultState(){return{appVersion:APP_VERSION,childName:'',tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS)),completedToday:[],lastAccessDate:new Date().toDateString(),monsters:[],points:0,stats:{totalCompleted:0,failedAttempts:0,perfectDays:0,history:[]},settings:{perfectQuota:100,monsterDropRate:25,theme:'classic',soundPack:'classic',parentPassword:null,nightMode:{enabled:false,autoSchedule:true,startTime:'20:30',endTime:'06:30'}}};}
+function defaultState(){return{appVersion:APP_VERSION,childName:'',tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS)),completedToday:[],lastAccessDate:new Date().toDateString(),monsters:[],points:0,stats:{totalCompleted:0,failedAttempts:0,perfectDays:0,history:[]},settings:{perfectQuota:80,monsterDropRate:30,theme:'classic',soundPack:'classic',parentPassword:null,nightMode:{enabled:false,autoSchedule:true,startTime:'20:30',endTime:'06:30'}}};}
 
 function migrate(old){const f=defaultState();const m=Object.assign({},f,old);m.settings=Object.assign({},f.settings,old.settings||{});m.settings.nightMode=Object.assign({},f.settings.nightMode,(old.settings&&old.settings.nightMode)||{});m.stats=Object.assign({},f.stats,old.stats||{});if(typeof m.stats.failedAttempts!=='number')m.stats.failedAttempts=0;if(!m.settings.theme)m.settings.theme='classic';if(!m.settings.soundPack)m.settings.soundPack='classic';if(m.settings.parentPassword===undefined)m.settings.parentPassword=null;m.appVersion=APP_VERSION;return m;}
 
