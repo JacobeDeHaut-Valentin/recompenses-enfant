@@ -308,9 +308,34 @@ function soundVictory(){const p=curPack();let n,t='sine';if(p==='bubbles')n=[104
 function soundUnlock(){const p=curPack();if(p==='arcade'){playTone(440,0.1,'square',0.16);setTimeout(function(){playTone(660,0.1,'square',0.16);},90);setTimeout(function(){playTone(880,0.3,'square',0.16);},180);}else if(p==='bubbles'){playTone(660,0.12,'sine',0.18);setTimeout(function(){playTone(990,0.12,'sine',0.18);},100);setTimeout(function(){playTone(1320,0.3,'sine',0.18);},200);}else{playTone(440,0.1);setTimeout(function(){playTone(660,0.1);},90);setTimeout(function(){playTone(880,0.3);},180);}}
 function soundFail(){const p=curPack();if(p==='arcade'){playTone(330,0.15,'square',0.13);setTimeout(function(){playTone(247,0.25,'square',0.13);},130);}else if(p==='bubbles')playTone(440,0.3,'sine',0.14,220);else{playTone(392,0.18,'sine',0.16);setTimeout(function(){playTone(294,0.28,'sine',0.14);},160);}}
 function soundError(){playTone(220,0.2,'sawtooth',0.1);}
+function soundAlarm(){
+  const p=curPack();
+  let type='sine';
+  if(p==='arcade')type='square';
+  const burst=[880,1100,1320];
+  const burstDur=0.18;
+  const burstGap=0.05;
+  const cycleGap=0.35;
+  const cycleDur=burst.length*(burstDur+burstGap)*1000+cycleGap*1000;
+  for(let cycle=0;cycle<3;cycle++){
+    burst.forEach(function(freq,i){
+      const delay=cycle*cycleDur+i*(burstDur+burstGap)*1000;
+      setTimeout(function(){playTone(freq,burstDur,type,0.25);},delay);
+    });
+  }
+}
 
 function vibrate(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
-async function acquireWakeLock(){try{if('wakeLock'in navigator)wakeLock=await navigator.wakeLock.request('screen');}catch(e){}}
+async function acquireWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock=await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release',function(){
+        if(timerRunning){acquireWakeLock();}
+      });
+    }
+  }catch(e){}
+}
 function releaseWakeLock(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const e=document.getElementById(id);if(e)e.classList.add('active');window.scrollTo(0,0);}
 function escapeHtml(s){var m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};return String(s).replace(/[&<>"']/g,function(c){return m[c];});}
@@ -385,7 +410,7 @@ function startTimer(){
   document.getElementById('timer-pair').classList.add('active');
   timerInterval=setInterval(function(){
     timerRemaining--;
-    if(timerRemaining<=0){timerRemaining=0;stopTimer();vibrate([200,100,200]);playTone(880,0.4);updateTimerDisplay();return;}
+    if(timerRemaining<=0){timerRemaining=0;stopTimer();vibrate([400,200,400,200,400,200,800]);soundAlarm();updateTimerDisplay();return;}
     if(timerRemaining===60)vibrate(50);
     updateTimerDisplay();
   },1000);
