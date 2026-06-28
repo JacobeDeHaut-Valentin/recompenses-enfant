@@ -9,68 +9,99 @@
 <meta name="apple-mobile-web-app-title" content="Monstres de Poche">
 <title>Monstres de Poche</title>
 <link id="manifest-link" rel="manifest">
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c5ce7'/><text x='50' y='72' font-size='60' text-anchor='middle'>🌟</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c5ce7'/><text x='50' y='74' font-size='62' text-anchor='middle'>%F0%9F%8C%9F</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236c5ce7'/><text x='50' y='74' font-size='62' text-anchor='middle'>%F0%9F%8C%9F</text></svg>">
 <style>
 :root{
   --primary:#6c5ce7;--primary-dark:#4834d4;--accent:#fdcb6e;--success:#00b894;
   --danger:#e17055;--info:#74b9ff;--bg:#fef9ff;--surface:#fff;--text:#2d3436;
   --muted:#95a5a6;--common:#74b9ff;--rare:#a29bfe;--epic:#fd79a8;
   --radius:20px;--shadow:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.18);
+  --grad-home:linear-gradient(135deg,#fef9ff 0%,#e7e4ff 100%);
+  --grad-timer:linear-gradient(135deg,#a29bfe 0%,#6c5ce7 100%);
+  --grad-gallery:linear-gradient(135deg,#fdcb6e 0%,#fd79a8 100%);
+  --grad-parent-bg:#2c3e50;--grad-parent-surface:#34495e;--grad-parent-input:#2c3e50;
+}
+body.night-mode{
+  --primary:#a29bfe;--primary-dark:#6c5ce7;--accent:#fdcb6e;
+  --bg:#1a1a2e;--surface:#16213e;--text:#eaeaea;--muted:#7a8ba0;
+  --shadow:0 4px 12px rgba(0,0,0,.5);--shadow-lg:0 8px 24px rgba(0,0,0,.7);
+  --grad-home:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);
+  --grad-timer:linear-gradient(135deg,#3d348b 0%,#1a1a2e 100%);
+  --grad-gallery:linear-gradient(135deg,#7c5e2c 0%,#7a3a55 100%);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow-x:hidden}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   background:var(--bg);color:var(--text);font-size:18px;line-height:1.4;
-  user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+  user-select:none;-webkit-user-select:none;overscroll-behavior:none;
+  transition:background .5s,color .5s;
+  display:flex;flex-direction:column;align-items:center;min-height:100vh}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;font-size:inherit}
-.screen{display:none;min-height:100vh;min-height:100dvh;padding:16px;flex-direction:column}
+.screen{display:none;width:100%;max-width:600px;min-height:100vh;min-height:100dvh;
+  padding:16px;flex-direction:column;align-items:stretch;margin:0 auto}
 .screen.active{display:flex}
 .hidden{display:none!important}
 
-#screen-home{background:linear-gradient(135deg,#fef9ff 0%,#e7e4ff 100%)}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
-.greeting{font-size:28px;font-weight:800;color:var(--primary-dark);margin:8px 0}
-.stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+#screen-home{background:var(--grad-home)}
+.header{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;gap:8px;width:100%}
+.header-actions{display:flex;gap:8px}
+.greeting{font-size:28px;font-weight:800;color:var(--primary-dark);
+  margin:8px 0;text-align:center;width:100%}
+body.night-mode .greeting{color:var(--accent)}
+.stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;
+  justify-content:center;width:100%}
 .stat-pill{background:var(--surface);padding:8px 14px;border-radius:999px;
-  box-shadow:var(--shadow);font-weight:700;font-size:15px}
-.tasks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;flex:1;align-content:start;padding-bottom:80px}
+  box-shadow:var(--shadow);font-weight:700;font-size:15px;color:var(--text)}
+.tasks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+  flex:1;align-content:start;padding-bottom:80px;width:100%;justify-items:stretch}
 .task-btn{background:var(--surface);border-radius:var(--radius);padding:18px 10px;
   min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;box-shadow:var(--shadow);font-size:17px;font-weight:700;
-  transition:transform .2s,opacity .3s;border:3px solid transparent}
+  gap:6px;box-shadow:var(--shadow);font-size:17px;font-weight:700;color:var(--text);
+  transition:transform .2s,opacity .3s,background .4s;border:3px solid transparent;
+  text-align:center}
 .task-btn:active{transform:scale(.95)}
 .task-btn.done{opacity:.55;background:#d4f5e1;border-color:var(--success)}
+body.night-mode .task-btn.done{background:#1e3a2a}
 .task-emoji{font-size:56px;line-height:1}
 .task-name{text-align:center;line-height:1.2}
-.task-check{position:absolute;font-size:24px}
 
 .btn-circle{width:56px;height:56px;border-radius:50%;background:var(--surface);
-  display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:var(--shadow)}
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  box-shadow:var(--shadow);color:var(--text)}
 
-#screen-timer{background:linear-gradient(135deg,#a29bfe 0%,#6c5ce7 100%);color:#fff;align-items:center}
+#screen-timer{background:var(--grad-timer);color:#fff;align-items:center}
 .timer-header{width:100%;display:flex;justify-content:flex-start}
-.timer-back{background:rgba(255,255,255,.2);color:#fff;padding:10px 16px;border-radius:999px;font-size:15px;font-weight:600}
-.timer-title{font-size:26px;font-weight:800;text-align:center;margin:8px 0}
-.timer-emoji{font-size:72px;text-align:center;margin:8px 0}
-.timer-circle-wrap{position:relative;width:260px;height:260px;margin:12px auto;max-width:80vw;max-height:35vh}
+.timer-back{background:rgba(255,255,255,.2);color:#fff;padding:10px 16px;
+  border-radius:999px;font-size:15px;font-weight:600}
+.timer-title{font-size:26px;font-weight:800;text-align:center;margin:8px 0;width:100%}
+.timer-emoji{font-size:72px;text-align:center;margin:8px 0;width:100%}
+.timer-circle-wrap{position:relative;width:260px;height:260px;margin:12px auto;
+  max-width:80vw;max-height:35vh}
 .timer-circle-wrap svg{transform:rotate(-90deg);width:100%;height:100%;display:block}
 .timer-circle-bg{fill:none;stroke:rgba(255,255,255,.2);stroke-width:14}
 .timer-circle-fg{fill:none;stroke:#fff;stroke-width:14;stroke-linecap:round;
   transition:stroke-dashoffset 1s linear,stroke .5s}
-.timer-display{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:64px;font-weight:800;font-variant-numeric:tabular-nums}
-.timer-controls{display:flex;gap:16px;justify-content:center;margin:16px 0}
+.timer-display{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;font-size:64px;font-weight:800;font-variant-numeric:tabular-nums}
+.timer-controls{display:flex;gap:16px;justify-content:center;margin:16px 0;width:100%}
 .timer-adjust{background:rgba(255,255,255,.25);padding:12px 22px;border-radius:16px;
   font-size:22px;font-weight:800;color:#fff;min-width:80px;min-height:64px}
-.timer-actions{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px}
-.btn-big{background:var(--accent);color:var(--text);font-size:24px;font-weight:800;
-  padding:18px 36px;border-radius:24px;box-shadow:var(--shadow-lg);min-height:72px;min-width:220px}
+.timer-actions{display:flex;flex-direction:column;align-items:center;gap:10px;
+  margin-top:8px;width:100%}
+.btn-big{background:var(--accent);color:#2d3436;font-size:24px;font-weight:800;
+  padding:18px 36px;border-radius:24px;box-shadow:var(--shadow-lg);
+  min-height:72px;min-width:220px}
 .btn-big:active{transform:scale(.96)}
 .btn-finish{background:var(--success);color:#fff}
 
-#screen-gallery{background:linear-gradient(135deg,#fdcb6e 0%,#fd79a8 100%);color:#fff;overflow-y:auto}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;padding-bottom:30px}
-.monster-card{background:rgba(255,255,255,.95);color:var(--text);border-radius:14px;
+#screen-gallery{background:var(--grad-gallery);color:#fff;overflow-y:auto;align-items:stretch}
+.gallery-title{font-size:28px;font-weight:800;text-align:center;margin:8px 0;width:100%}
+.gallery-counter{text-align:center;font-size:18px;font-weight:700;width:100%}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-top:16px;padding-bottom:30px;width:100%}
+.monster-card{background:rgba(255,255,255,.95);color:#2d3436;border-radius:14px;
   padding:10px 6px;text-align:center;min-height:120px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:4px;box-shadow:var(--shadow)}
 .monster-card.locked{background:rgba(0,0,0,.25);color:rgba(255,255,255,.85)}
@@ -82,34 +113,46 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .rarity-rare{background:var(--rare)}
 .rarity-epic{background:var(--epic)}
 
-#screen-parent{background:#2c3e50;color:#ecf0f1;overflow-y:auto}
-#screen-parent .header h2{margin:0;font-size:20px}
-.p-section{background:#34495e;padding:14px;border-radius:12px;margin-bottom:12px}
-.p-section h3{font-size:16px;margin-bottom:10px;color:#fdcb6e}
+#screen-parent{background:var(--grad-parent-bg);color:#ecf0f1;overflow-y:auto;align-items:stretch}
+#screen-parent .header h2{margin:0;font-size:20px;color:#fff;text-align:center;flex:1}
+.p-section{background:var(--grad-parent-surface);padding:14px;border-radius:12px;
+  margin-bottom:12px;width:100%}
+.p-section h3{font-size:16px;margin-bottom:10px;color:#fdcb6e;text-align:center}
 #screen-parent input,#screen-parent select,#screen-parent textarea{
-  background:#2c3e50;color:#fff;border:1px solid #4a5d6e;padding:10px;
+  background:var(--grad-parent-input);color:#fff;border:1px solid #4a5d6e;padding:10px;
   border-radius:8px;font-size:15px;width:100%;font-family:inherit}
+#screen-parent input[type="checkbox"]{width:auto;margin-right:8px;transform:scale(1.3)}
+#screen-parent input[type="time"]{width:auto;display:inline-block}
 #screen-parent label{display:block;margin:8px 0 4px;font-size:13px;color:#bdc3c7}
 .p-btn{background:var(--primary);color:#fff;padding:10px 14px;border-radius:8px;
   font-size:14px;font-weight:600;margin:4px 4px 4px 0;min-height:40px}
 .p-btn.danger{background:var(--danger)}
 .p-btn.success{background:var(--success)}
 .p-btn.warn{background:#e67e22}
+.p-actions-center{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .task-row{display:flex;gap:6px;align-items:center;padding:8px;background:#2c3e50;
-  border-radius:8px;margin-bottom:6px;flex-wrap:wrap}
-.task-row .tr-emoji{width:50px;font-size:20px;text-align:center}
+  border-radius:8px;margin-bottom:6px;flex-wrap:wrap;justify-content:center}
+.task-row .tr-emoji{width:60px;font-size:20px;text-align:center}
 .task-row .tr-name{flex:2;min-width:120px}
-.task-row .tr-dur{width:70px}
-.task-row .tr-actions{display:flex;gap:4px}
-.icon-btn{background:#4a5d6e;color:#fff;border-radius:6px;padding:6px 10px;font-size:16px;min-height:36px}
+.task-row .tr-dur{width:70px;text-align:center}
+.task-row .tr-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.icon-btn{background:#4a5d6e;color:#fff;border-radius:6px;padding:6px 10px;
+  font-size:16px;min-height:36px;min-width:36px}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stat-box{background:#2c3e50;padding:10px;border-radius:8px;text-align:center}
 .stat-box .v{font-size:24px;font-weight:800;color:var(--accent)}
 .stat-box .l{font-size:11px;color:#bdc3c7}
+.night-row{display:flex;align-items:center;justify-content:flex-start;
+  flex-wrap:wrap;gap:6px;margin:8px 0}
+.time-row{display:flex;gap:10px;justify-content:center;align-items:center;
+  flex-wrap:wrap;margin:8px 0}
+.time-row label{margin:0;color:#bdc3c7}
 
-.lock-btn{position:fixed;bottom:14px;right:14px;width:48px;height:48px;border-radius:50%;
-  background:rgba(0,0,0,.18);color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:22px;z-index:100;backdrop-filter:blur(4px)}
+.lock-btn{position:fixed;bottom:14px;right:14px;width:48px;height:48px;
+  border-radius:50%;background:rgba(0,0,0,.18);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:22px;z-index:100;
+  backdrop-filter:blur(4px)}
+body.night-mode .lock-btn{background:rgba(255,255,255,.12)}
 
 .confetti-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:200}
 .confetti{position:absolute;width:12px;height:14px;top:-20px;animation:confetti-fall linear forwards}
@@ -119,33 +162,38 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 }
 
 .card-reveal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:20px}
-.card-flip{width:240px;height:320px;perspective:1200px}
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  gap:20px;padding:20px;text-align:center}
+.card-flip{width:240px;height:320px;perspective:1200px;margin:0 auto}
 .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;
   animation:cardFlip 1.6s cubic-bezier(.5,0,.5,1) forwards}
 @keyframes cardFlip{
   0%{transform:rotateY(0) scale(.4)}
   100%{transform:rotateY(900deg) scale(1)}
 }
-.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+.card-face{position:absolute;inset:0;backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;border-radius:24px;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;
   box-shadow:var(--shadow-lg);padding:16px;text-align:center}
 .card-back{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff;font-size:90px}
-.card-front{background:#fff;transform:rotateY(180deg);color:var(--text);gap:10px}
+.card-front{background:#fff;transform:rotateY(180deg);color:#2d3436;gap:10px}
 .card-front .ce{font-size:110px;line-height:1}
 .card-front .cn{font-size:24px;font-weight:800}
-.card-reveal-bg .closebtn{background:#fff;color:var(--text);padding:14px 28px;border-radius:16px;font-weight:800;font-size:18px}
-.card-reveal-bg .title{color:#fff;font-size:22px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.card-reveal-bg .closebtn{background:#fff;color:#2d3436;padding:14px 28px;
+  border-radius:16px;font-weight:800;font-size:18px}
+.card-reveal-bg .title{color:#fff;font-size:22px;font-weight:800;
+  text-shadow:0 2px 8px rgba(0,0,0,.5)}
 
 .victory-overlay{position:fixed;inset:0;z-index:400;
   background:radial-gradient(circle at center,#ffeaa7,#fdcb6e 40%,#e17055);
   display:flex;align-items:center;justify-content:center;flex-direction:column;
   color:#fff;text-align:center;padding:20px;overflow:hidden}
-.victory-overlay h1{font-size:44px;font-weight:900;text-shadow:0 4px 12px rgba(0,0,0,.4);
-  animation:bounce .6s ease infinite alternate}
-.victory-overlay p{font-size:22px;margin-top:14px;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.3)}
-.victory-overlay .closebtn{background:#fff;color:var(--text);padding:14px 28px;border-radius:16px;
-  font-weight:800;font-size:18px;margin-top:24px}
+.victory-overlay h1{font-size:44px;font-weight:900;
+  text-shadow:0 4px 12px rgba(0,0,0,.4);animation:bounce .6s ease infinite alternate}
+.victory-overlay p{font-size:22px;margin-top:14px;font-weight:700;
+  text-shadow:0 2px 6px rgba(0,0,0,.3)}
+.victory-overlay .closebtn{background:#fff;color:#2d3436;padding:14px 28px;
+  border-radius:16px;font-weight:800;font-size:18px;margin-top:24px}
 @keyframes bounce{from{transform:scale(1)}to{transform:scale(1.1)}}
 .firework{position:absolute;width:8px;height:8px;border-radius:50%;
   animation:firework 1.5s ease-out forwards}
@@ -156,19 +204,27 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;
   display:flex;align-items:center;justify-content:center;padding:16px}
-.modal{background:#fff;color:var(--text);border-radius:20px;padding:24px;max-width:380px;width:100%}
-.modal h3{margin-bottom:12px;font-size:22px}
+.modal{background:#fff;color:#2d3436;border-radius:20px;padding:24px;
+  max-width:380px;width:100%;text-align:center}
+body.night-mode .modal{background:#16213e;color:#eaeaea}
+.modal h3{margin-bottom:12px;font-size:22px;text-align:center}
 .modal input{width:100%;padding:14px;border:2px solid #ddd;border-radius:12px;
   font-size:22px;margin:12px 0;text-align:center;font-family:inherit}
-.modal-buttons{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+body.night-mode .modal input{background:#1a1a2e;color:#fff;border-color:#3d3d5c}
+.modal-buttons{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 .modal-buttons button{padding:12px 18px;border-radius:10px;font-weight:700;min-height:44px}
-.modal-cancel{background:#ecf0f1;color:var(--text)}
+.modal-cancel{background:#ecf0f1;color:#2d3436}
+body.night-mode .modal-cancel{background:#3d3d5c;color:#eaeaea}
 .modal-ok{background:var(--primary);color:#fff}
-.modal-error{color:var(--danger);font-size:14px;margin-top:6px;min-height:18px}
+.modal-error{color:var(--danger);font-size:14px;margin-top:6px;min-height:18px;text-align:center}
 
 @media(max-width:340px){
   .tasks-grid{grid-template-columns:1fr}
   .gallery-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:600px){
+  .tasks-grid{grid-template-columns:repeat(3,1fr)}
+  .gallery-grid{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
@@ -176,10 +232,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 <section id="screen-home" class="screen active">
   <div class="header">
-    <div></div>
-    <button id="btn-gallery" class="btn-circle" aria-label="Voir la galerie">🏆</button>
+    <div style="width:56px"></div>
+    <h1 class="greeting" id="greeting">Mission du jour ! 🚀</h1>
+    <div class="header-actions">
+      <button id="btn-night" class="btn-circle" aria-label="Basculer mode nuit">🌙</button>
+      <button id="btn-gallery" class="btn-circle" aria-label="Voir la galerie">🏆</button>
+    </div>
   </div>
-  <h1 class="greeting" id="greeting">Mission du jour ! 🚀</h1>
   <div class="stats-row">
     <div class="stat-pill" id="stat-tasks">⏳ — restantes</div>
     <div class="stat-pill" id="stat-monsters">👾 0 / 20</div>
@@ -214,10 +273,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <section id="screen-gallery" class="screen">
   <div class="header">
     <button class="timer-back" id="gallery-back" aria-label="Retour">← Retour</button>
-    <div></div>
+    <div style="flex:1"></div>
+    <div style="width:80px"></div>
   </div>
-  <h2 style="font-size:28px;font-weight:800;text-align:center;margin:8px 0">Ma Collection 🏆</h2>
-  <p id="gallery-counter" style="text-align:center;font-size:18px;font-weight:700">0 / 20 monstres</p>
+  <h2 class="gallery-title">Ma Collection 🏆</h2>
+  <p class="gallery-counter" id="gallery-counter">0 / 20 monstres</p>
   <div class="gallery-grid" id="gallery-grid"></div>
 </section>
 
@@ -225,6 +285,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <div class="header">
     <button class="timer-back" id="parent-back" style="background:rgba(255,255,255,.12)" aria-label="Retour">← Retour</button>
     <h2>🔧 Zone Parent</h2>
+    <div style="width:80px"></div>
   </div>
   <div id="parent-content"></div>
 </section>
@@ -234,8 +295,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <script>
 'use strict';
 
-/* ==================== CONSTANTES ==================== */
-const APP_VERSION = 1;
+const APP_VERSION = 2;
 const STORAGE_KEY = 'monstresDePoche';
 
 const DEFAULT_TASKS = [
@@ -272,7 +332,6 @@ const BESTIARY = [
 const RARITY_LABEL = {common:'Commun',rare:'Rare',epic:'Épique'};
 const EMOJI_CHOICES = ['🦷','👕','🍎','🧸','🛏️','📚','✏️','🚿','🥣','🦶','🪥','🧦','🎒','🧹','🚰','🎨','⚽','🎵','💧','🍽️'];
 
-/* ==================== ÉTAT ==================== */
 let state = null;
 let currentTaskId = null;
 let timerInterval = null;
@@ -282,11 +341,8 @@ let timerRunning = false;
 let wakeLock = null;
 let parentChallenge = null;
 let perfectShownToday = false;
+let nightCheckInterval = null;
 
-/**
- * Construit l'état par défaut (premier lancement)
- * @returns {object}
- */
 function defaultState(){
   return {
     appVersion: APP_VERSION,
@@ -297,21 +353,24 @@ function defaultState(){
     monsters: [],
     points: 0,
     stats: {totalCompleted:0,perfectDays:0,history:[]},
-    settings: {perfectQuota:100,monsterDropRate:25}
+    settings: {
+      perfectQuota:100,
+      monsterDropRate:25,
+      nightMode: {enabled:false, autoSchedule:true, startTime:'20:30', endTime:'06:30'}
+    }
   };
 }
 
-/** Migration ascendante du schéma */
 function migrate(old){
   const fresh = defaultState();
   const merged = Object.assign({}, fresh, old);
   merged.settings = Object.assign({}, fresh.settings, old.settings || {});
+  merged.settings.nightMode = Object.assign({}, fresh.settings.nightMode, (old.settings && old.settings.nightMode) || {});
   merged.stats = Object.assign({}, fresh.stats, old.stats || {});
   merged.appVersion = APP_VERSION;
   return merged;
 }
 
-/** Charge l'état depuis localStorage */
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -323,12 +382,10 @@ function loadState(){
   return defaultState();
 }
 
-/** Sauvegarde l'état */
 function saveState(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
 }
 
-/** Reset automatique des tâches du jour si nouveau jour */
 function checkDailyReset(){
   const today = new Date().toDateString();
   if(state.lastAccessDate !== today){
@@ -343,7 +400,43 @@ function checkDailyReset(){
   }
 }
 
-/* ==================== AUDIO ==================== */
+function isWithinNightSchedule(){
+  const nm = state.settings.nightMode;
+  if(!nm.startTime || !nm.endTime) return false;
+  const now = new Date();
+  const cur = now.getHours()*60 + now.getMinutes();
+  const [sh,sm] = nm.startTime.split(':').map(Number);
+  const [eh,em] = nm.endTime.split(':').map(Number);
+  const start = sh*60 + sm;
+  const end = eh*60 + em;
+  if(start === end) return false;
+  if(start < end) return cur >= start && cur < end;
+  return cur >= start || cur < end;
+}
+
+function applyNightMode(){
+  const nm = state.settings.nightMode;
+  let on = nm.autoSchedule ? isWithinNightSchedule() : !!nm.enabled;
+  document.body.classList.toggle('night-mode', on);
+  const btn = document.getElementById('btn-night');
+  if(btn) btn.textContent = on ? '☀️' : '🌙';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', on ? '#1a1a2e' : '#6c5ce7');
+}
+
+function toggleNightMode(){
+  const nm = state.settings.nightMode;
+  nm.autoSchedule = false;
+  nm.enabled = !document.body.classList.contains('night-mode');
+  saveState();
+  applyNightMode();
+}
+
+function startNightWatcher(){
+  if(nightCheckInterval) clearInterval(nightCheckInterval);
+  nightCheckInterval = setInterval(applyNightMode, 60000);
+}
+
 let audioCtx = null;
 function getAudio(){
   try{
@@ -353,9 +446,6 @@ function getAudio(){
   }catch(e){ return null; }
 }
 
-/**
- * Joue une note synthétisée
- */
 function playTone(freq, duration, type='sine', vol=0.18){
   try{
     const ctx = getAudio(); if(!ctx) return;
@@ -386,12 +476,10 @@ function soundUnlock(){
 }
 function soundError(){ playTone(220, 0.2, 'sawtooth', 0.1); }
 
-/* ==================== HAPTIC ==================== */
 function vibrate(pattern){
   try{ if(navigator.vibrate) navigator.vibrate(pattern); }catch(e){}
 }
 
-/* ==================== WAKE LOCK ==================== */
 async function acquireWakeLock(){
   try{
     if('wakeLock' in navigator){
@@ -403,7 +491,6 @@ function releaseWakeLock(){
   try{ if(wakeLock){ wakeLock.release(); wakeLock = null; } }catch(e){}
 }
 
-/* ==================== NAVIGATION ==================== */
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById(id);
@@ -411,7 +498,10 @@ function showScreen(id){
   window.scrollTo(0,0);
 }
 
-/* ==================== RENDU ACCUEIL ==================== */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 function activeTasks(){ return state.tasks.filter(t => t.active); }
 
 function renderHome(){
@@ -422,7 +512,6 @@ function renderHome(){
   document.getElementById('stat-tasks').textContent = `⏳ ${remaining} restante${remaining>1?'s':''}`;
   document.getElementById('stat-monsters').textContent = `👾 ${state.monsters.length} / ${BESTIARY.length}`;
   document.getElementById('stat-points').textContent = `⭐ ${state.points} pts`;
-  
   const grid = document.getElementById('tasks-grid');
   grid.innerHTML = '';
   active.forEach(t => {
@@ -437,18 +526,13 @@ function renderHome(){
     `;
     btn.addEventListener('click', () => {
       soundClick(); vibrate(20);
-      if(done){ return; }
+      if(done) return;
       openTimer(t.id);
     });
     grid.appendChild(btn);
   });
 }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-/* ==================== MINUTEUR ==================== */
 function openTimer(taskId){
   currentTaskId = taskId;
   const task = state.tasks.find(t => t.id === taskId);
@@ -522,6 +606,7 @@ function stopTimer(){
 function exitTimer(){
   stopTimer();
   showScreen('screen-home');
+  renderHome();
 }
 
 function finishTask(){
@@ -536,10 +621,8 @@ function finishTask(){
   vibrate([100,50,100,50,200]);
   soundValid();
   showConfetti();
-  
   const reward = drawReward();
   saveState();
-  
   setTimeout(() => {
     if(reward){
       showMonsterReveal(reward);
@@ -551,28 +634,18 @@ function finishTask(){
   }, 1400);
 }
 
-/* ==================== RÉCOMPENSES ==================== */
-/**
- * Tire une récompense potentielle
- * @returns {object|null} monstre débloqué ou null
- */
 function drawReward(){
   const rate = state.settings.monsterDropRate / 100;
   if(Math.random() >= rate) return null;
-  
   const rarityRoll = Math.random();
   let targetRarity;
   if(rarityRoll < 0.70) targetRarity = 'common';
   else if(rarityRoll < 0.95) targetRarity = 'rare';
   else targetRarity = 'epic';
-  
   let candidate = pickUncollected(targetRarity);
   if(!candidate && targetRarity === 'epic') candidate = pickUncollected('rare');
   if(!candidate) candidate = pickUncollected('common');
-  if(!candidate){
-    state.points += 20;
-    return null;
-  }
+  if(!candidate){ state.points += 20; return null; }
   state.monsters.push(candidate.id);
   return candidate;
 }
@@ -583,7 +656,6 @@ function pickUncollected(rarity){
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/* ==================== CONFETTIS ==================== */
 function showConfetti(){
   const cont = document.createElement('div');
   cont.className = 'confetti-container';
@@ -602,7 +674,6 @@ function showConfetti(){
   setTimeout(() => cont.remove(), 4000);
 }
 
-/* ==================== RÉVÉLATION MONSTRE ==================== */
 function showMonsterReveal(monster){
   soundUnlock();
   vibrate([50,30,50,30,150]);
@@ -632,7 +703,6 @@ function showMonsterReveal(monster){
   });
 }
 
-/* ==================== JOURNÉE PARFAITE ==================== */
 function checkPerfectDay(){
   const active = activeTasks();
   if(active.length === 0) return;
@@ -692,7 +762,6 @@ function spawnFireworks(parent){
   }
 }
 
-/* ==================== GALERIE ==================== */
 function renderGallery(){
   document.getElementById('gallery-counter').textContent = `${state.monsters.length} / ${BESTIARY.length} monstres`;
   const grid = document.getElementById('gallery-grid');
@@ -710,7 +779,6 @@ function renderGallery(){
   });
 }
 
-/* ==================== ZONE PARENT - ACCÈS ==================== */
 function getParentLockInfo(){
   const until = parseInt(sessionStorage.getItem('parentLockUntil') || '0', 10);
   const fails = parseInt(sessionStorage.getItem('parentFails') || '0', 10);
@@ -763,7 +831,6 @@ function showMathModal(){
   });
 }
 
-/* ==================== MODALE GÉNÉRIQUE ==================== */
 function showModal({title, message, inputType, defaultValue='', onValidate, okText='Valider', cancelText='Annuler'}){
   const bg = document.createElement('div');
   bg.className = 'modal-bg';
@@ -784,10 +851,8 @@ function showModal({title, message, inputType, defaultValue='', onValidate, okTe
   const input = bg.querySelector('#modal-input');
   const errEl = bg.querySelector('#modal-error');
   if(input) setTimeout(() => input.focus(), 50);
-  
   const close = () => bg.remove();
   bg.querySelector('.modal-cancel').addEventListener('click', () => { soundClick(); close(); });
-  
   const tryValidate = () => {
     soundClick();
     const val = input ? input.value : null;
@@ -802,7 +867,6 @@ function showModal({title, message, inputType, defaultValue='', onValidate, okTe
   return bg;
 }
 
-/* ==================== ZONE PARENT - RENDU ==================== */
 function openParentZone(){
   renderParent();
   showScreen('screen-parent');
@@ -813,30 +877,45 @@ function renderParent(){
   const s = state.settings;
   const stats = state.stats;
   const last7 = computeLast7Days();
-  
+  const nm = s.nightMode;
   c.innerHTML = `
     <div class="p-section">
       <h3>👦 Identité</h3>
       <label>Prénom de l'enfant</label>
       <input type="text" id="p-name" value="${escapeHtml(state.childName)}" maxlength="20"/>
-      <button class="p-btn success" id="p-save-name">Enregistrer</button>
+      <div class="p-actions-center"><button class="p-btn success" id="p-save-name">Enregistrer</button></div>
     </div>
-    
+    <div class="p-section">
+      <h3>🌙 Mode Nuit</h3>
+      <div class="night-row">
+        <input type="checkbox" id="p-nm-enabled" ${nm.enabled?'checked':''}/>
+        <label for="p-nm-enabled" style="margin:0">Activé manuellement</label>
+      </div>
+      <div class="night-row">
+        <input type="checkbox" id="p-nm-auto" ${nm.autoSchedule?'checked':''}/>
+        <label for="p-nm-auto" style="margin:0">Activation automatique selon l'heure</label>
+      </div>
+      <div class="time-row">
+        <label>Début :</label>
+        <input type="time" id="p-nm-start" value="${nm.startTime}"/>
+        <label>Fin :</label>
+        <input type="time" id="p-nm-end" value="${nm.endTime}"/>
+      </div>
+      <div class="p-actions-center"><button class="p-btn success" id="p-save-night">Enregistrer</button></div>
+    </div>
     <div class="p-section">
       <h3>📋 Tâches</h3>
       <div id="p-tasks-list"></div>
-      <button class="p-btn" id="p-add-task">➕ Nouvelle tâche</button>
+      <div class="p-actions-center"><button class="p-btn" id="p-add-task">➕ Nouvelle tâche</button></div>
     </div>
-    
     <div class="p-section">
       <h3>🎁 Récompenses</h3>
       <label>Quota Journée Parfaite : <b id="p-quota-val">${s.perfectQuota}%</b></label>
       <input type="range" id="p-quota" min="50" max="100" step="5" value="${s.perfectQuota}"/>
       <label style="margin-top:10px">Probabilité monstre : <b id="p-drop-val">${s.monsterDropRate}%</b></label>
       <input type="range" id="p-drop" min="5" max="100" step="5" value="${s.monsterDropRate}"/>
-      <button class="p-btn success" id="p-save-rewards">Enregistrer</button>
+      <div class="p-actions-center"><button class="p-btn success" id="p-save-rewards">Enregistrer</button></div>
     </div>
-    
     <div class="p-section">
       <h3>📊 Statistiques</h3>
       <div class="stat-grid">
@@ -845,23 +924,24 @@ function renderParent(){
         <div class="stat-box"><div class="v">${stats.perfectDays}</div><div class="l">Journées parfaites</div></div>
         <div class="stat-box"><div class="v">${state.monsters.length}/${BESTIARY.length}</div><div class="l">Monstres</div></div>
       </div>
-      <div style="margin-top:8px;font-size:13px;color:#bdc3c7">Points cumulés : ${state.points} ⭐</div>
+      <div style="margin-top:8px;font-size:13px;color:#bdc3c7;text-align:center">Points cumulés : ${state.points} ⭐</div>
     </div>
-    
     <div class="p-section">
       <h3>💾 Sauvegarde</h3>
-      <button class="p-btn" id="p-export">📤 Exporter JSON</button>
-      <button class="p-btn" id="p-import">📥 Importer JSON</button>
+      <div class="p-actions-center">
+        <button class="p-btn" id="p-export">📤 Exporter JSON</button>
+        <button class="p-btn" id="p-import">📥 Importer JSON</button>
+      </div>
     </div>
-    
     <div class="p-section">
       <h3>♻️ Réinitialisation</h3>
-      <button class="p-btn warn" id="p-reset-day">Reset du jour</button>
-      <button class="p-btn warn" id="p-reset-collection">Reset collection</button>
-      <button class="p-btn danger" id="p-reset-all">⚠️ Reset complet</button>
+      <div class="p-actions-center">
+        <button class="p-btn warn" id="p-reset-day">Reset du jour</button>
+        <button class="p-btn warn" id="p-reset-collection">Reset collection</button>
+        <button class="p-btn danger" id="p-reset-all">⚠️ Reset complet</button>
+      </div>
     </div>
   `;
-  
   renderParentTasks();
   bindParentEvents();
 }
@@ -877,13 +957,13 @@ function computeLast7Days(){
 function renderParentTasks(){
   const list = document.getElementById('p-tasks-list');
   list.innerHTML = '';
-  state.tasks.forEach((t, idx) => {
+  state.tasks.forEach((t) => {
     const row = document.createElement('div');
     row.className = 'task-row';
     row.innerHTML = `
-      <input class="tr-emoji" type="text" value="${escapeHtml(t.emoji)}" maxlength="2" data-id="${t.id}" data-field="emoji"/>
-      <input class="tr-name" type="text" value="${escapeHtml(t.name)}" maxlength="40" data-id="${t.id}" data-field="name"/>
-      <input class="tr-dur" type="number" min="1" max="30" value="${t.duration}" data-id="${t.id}" data-field="duration"/>
+      <input class="tr-emoji" type="text" value="${escapeHtml(t.emoji)}" maxlength="2" data-id="${t.id}" data-field="emoji" aria-label="Emoji"/>
+      <input class="tr-name" type="text" value="${escapeHtml(t.name)}" maxlength="40" data-id="${t.id}" data-field="name" aria-label="Nom"/>
+      <input class="tr-dur" type="number" min="1" max="30" value="${t.duration}" data-id="${t.id}" data-field="duration" aria-label="Durée"/>
       <div class="tr-actions">
         <button class="icon-btn" data-act="up" data-id="${t.id}" aria-label="Monter">↑</button>
         <button class="icon-btn" data-act="down" data-id="${t.id}" aria-label="Descendre">↓</button>
@@ -893,7 +973,6 @@ function renderParentTasks(){
     `;
     list.appendChild(row);
   });
-  
   list.querySelectorAll('input').forEach(inp => {
     inp.addEventListener('change', e => {
       const id = parseInt(e.target.dataset.id, 10);
@@ -909,12 +988,10 @@ function renderParentTasks(){
       saveState();
     });
   });
-  
   list.querySelectorAll('.icon-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = parseInt(btn.dataset.id, 10);
-      const act = btn.dataset.act;
-      handleTaskAction(id, act);
+      handleTaskAction(id, btn.dataset.act);
     });
   });
 }
@@ -942,7 +1019,16 @@ function bindParentEvents(){
     saveState();
     flashSaved('p-save-name');
   });
-  
+  document.getElementById('p-save-night').addEventListener('click', () => {
+    const nm = state.settings.nightMode;
+    nm.enabled = document.getElementById('p-nm-enabled').checked;
+    nm.autoSchedule = document.getElementById('p-nm-auto').checked;
+    nm.startTime = document.getElementById('p-nm-start').value || '20:30';
+    nm.endTime = document.getElementById('p-nm-end').value || '06:30';
+    saveState();
+    applyNightMode();
+    flashSaved('p-save-night');
+  });
   const quotaSlider = document.getElementById('p-quota');
   const dropSlider = document.getElementById('p-drop');
   quotaSlider.addEventListener('input', e => {
@@ -957,11 +1043,9 @@ function bindParentEvents(){
     saveState();
     flashSaved('p-save-rewards');
   });
-  
   document.getElementById('p-add-task').addEventListener('click', addTaskFlow);
   document.getElementById('p-export').addEventListener('click', exportConfig);
   document.getElementById('p-import').addEventListener('click', importConfig);
-  
   document.getElementById('p-reset-day').addEventListener('click', () => {
     if(confirm('Réinitialiser la progression du jour ?')){
       state.completedToday = [];
@@ -982,6 +1066,7 @@ function bindParentEvents(){
     if(!confirm('Vraiment tout effacer ? (dernière confirmation)')) return;
     state = defaultState();
     saveState();
+    applyNightMode();
     renderParent();
   });
 }
@@ -999,20 +1084,20 @@ function addTaskFlow(){
   showModal({
     title: '➕ Nouvelle tâche',
     message: `
-      <label>Nom</label>
-      <input type="text" id="nt-name" maxlength="40" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px"/>
-      <label>Emoji (clique ou tape)</label>
-      <input type="text" id="nt-emoji" maxlength="2" value="⭐" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px"/>
-      <div style="display:flex;flex-wrap:wrap;max-height:120px;overflow-y:auto;margin:6px 0">${choices}</div>
-      <label>Durée (min)</label>
-      <input type="number" id="nt-dur" min="1" max="30" value="5" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px"/>
+      <label style="text-align:left;display:block">Nom</label>
+      <input type="text" id="nt-name" maxlength="40" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px;font-size:16px"/>
+      <label style="text-align:left;display:block">Emoji (clique ou tape)</label>
+      <input type="text" id="nt-emoji" maxlength="2" value="⭐" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px;font-size:16px;text-align:center"/>
+      <div style="display:flex;flex-wrap:wrap;max-height:120px;overflow-y:auto;margin:6px 0;justify-content:center">${choices}</div>
+      <label style="text-align:left;display:block">Durée (min)</label>
+      <input type="number" id="nt-dur" min="1" max="30" value="5" style="width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px;font-size:16px;text-align:center"/>
     `,
     inputType: null,
     onValidate: () => {
       const name = document.getElementById('nt-name').value.trim();
       const emoji = document.getElementById('nt-emoji').value.trim() || '⭐';
       const dur = Math.max(1, Math.min(30, parseInt(document.getElementById('nt-dur').value, 10) || 5));
-      if(!name){ return 'Donne un nom à la tâche'; }
+      if(!name) return 'Donne un nom à la tâche';
       const id = Math.max(0, ...state.tasks.map(t => t.id)) + 1;
       state.tasks.push({id, emoji, name, duration: dur, active: true});
       saveState();
@@ -1029,8 +1114,6 @@ function addTaskFlow(){
   }, 100);
 }
 
-/* ==================== EXPORT / IMPORT ==================== */
-/* ==================== EXPORT / IMPORT (suite) ==================== */
 function exportConfig(){
   try{
     const data = JSON.stringify(state, null, 2);
@@ -1059,6 +1142,7 @@ function importConfig(){
         if(!data || typeof data !== 'object') throw new Error('Format invalide');
         state = migrate(data);
         saveState();
+        applyNightMode();
         renderParent();
         alert('✅ Import réussi !');
       }catch(err){ alert('❌ Fichier invalide : ' + err.message); }
@@ -1068,7 +1152,6 @@ function importConfig(){
   inp.click();
 }
 
-/* ==================== APPUI LONG CADENAS ==================== */
 let lockPressTimer = null;
 function setupLockButton(){
   const btn = document.getElementById('lock-btn');
@@ -1090,7 +1173,6 @@ function setupLockButton(){
   btn.addEventListener('mouseleave', cancel);
 }
 
-/* ==================== PROMPT PRÉNOM PREMIER LANCEMENT ==================== */
 function askNameIfNeeded(){
   if(state.childName) return;
   showModal({
@@ -1111,11 +1193,10 @@ function askNameIfNeeded(){
   });
 }
 
-/* ==================== PWA : MANIFEST & SERVICE WORKER ==================== */
 function setupPWA(){
   try{
     const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#6c5ce7"/><text x="50" y="72" font-size="60" text-anchor="middle">🌟</text></svg>`;
-    const iconData = 'data:image/svg+xml;base64,' + btoa(iconSvg);
+    const iconData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(iconSvg)));
     const manifest = {
       name: 'Monstres de Poche',
       short_name: 'Monstres',
@@ -1132,11 +1213,10 @@ function setupPWA(){
     const manifestUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
     document.getElementById('manifest-link').href = manifestUrl;
   }catch(e){}
-  
   try{
     if('serviceWorker' in navigator){
       const swCode = `
-        const CACHE = 'mdp-v1';
+        const CACHE = 'mdp-v2';
         self.addEventListener('install', e => { self.skipWaiting(); });
         self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
         self.addEventListener('fetch', e => {
@@ -1161,12 +1241,15 @@ function setupPWA(){
   }catch(e){}
 }
 
-/* ==================== ÉVÉNEMENTS GLOBAUX ==================== */
 function bindGlobalEvents(){
   document.getElementById('btn-gallery').addEventListener('click', () => {
     soundClick(); vibrate(20);
     renderGallery();
     showScreen('screen-gallery');
+  });
+  document.getElementById('btn-night').addEventListener('click', () => {
+    soundClick(); vibrate(15);
+    toggleNightMode();
   });
   document.getElementById('gallery-back').addEventListener('click', () => {
     soundClick(); showScreen('screen-home');
@@ -1181,25 +1264,25 @@ function bindGlobalEvents(){
   document.getElementById('timer-plus').addEventListener('click', () => adjustTimer(1));
   document.getElementById('timer-go').addEventListener('click', startTimer);
   document.getElementById('timer-finish').addEventListener('click', finishTask);
-  
   document.addEventListener('visibilitychange', () => {
     if(document.visibilityState === 'visible'){
       checkDailyReset();
+      applyNightMode();
       if(document.getElementById('screen-home').classList.contains('active')) renderHome();
       if(timerRunning && !wakeLock) acquireWakeLock();
     }
   });
-  
   window.addEventListener('beforeunload', () => { releaseWakeLock(); });
 }
 
-/* ==================== INIT ==================== */
 function init(){
   state = loadState();
   checkDailyReset();
   setupPWA();
   bindGlobalEvents();
   setupLockButton();
+  applyNightMode();
+  startNightWatcher();
   renderHome();
   askNameIfNeeded();
 }
